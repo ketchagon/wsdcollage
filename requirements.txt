@@ -1,0 +1,4 @@
+flask
+flask-cors
+nanoid
+opencv-python
