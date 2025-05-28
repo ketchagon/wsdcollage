@@ -31,25 +31,28 @@ def post_photos():
     resp = {'url': f'/static/{filename}'}
     
     # 2つ目の画像の処理
-    if 'preset_file' in request.files:
-        preset_file = request.files['preset_file']
-        if preset_file.content_type == 'image/jpeg':
-            preset_filename = f'preset_{nanoid.generate(size=4)}.jpg'
-            preset_file.save(f'static/{preset_filename}')
-            preset_img0 = cv2.imread(f'static/{preset_filename}', 1)
-            cv2.imwrite(f'static/{preset_filename}', preset_img0)
+    if 'preset_file' not in request.files:
+        abort(400, 'Missing preset_file')
+
+    preset_file = request.files['preset_file']
+    if preset_file.content_type != 'image/jpeg':
+        abort(400, 'preset_file must be a JPEG')
+    preset_filename = f'preset_{nanoid.generate(size=4)}.jpg'
+    preset_file.save(f'static/{preset_filename}')
+    preset_img0 = cv2.imread(f'static/{preset_filename}', 1)
+    cv2.imwrite(f'static/{preset_filename}', preset_img0)
             
 
-    cv2.resize(preset_img0,(538,413))
+    preset_img0 = cv2.resize(preset_img0,(538,413))
 
     x = 0
     y = 0
 
     img_dst = img0
 
-    while y > 538:
+    while y < 538:
         x=0
-        while x > 413:
+        while x < 413:
             a = preset_img0[x][y][0]
             b = preset_img0[x][y][1]
             c = preset_img0[x][y][2]
@@ -58,9 +61,8 @@ def post_photos():
         y+=1
 
     collage_name = f'{nanoid.generate(size=4)}.jpg'
-    img_collage = cv2.imread(f'static/{collage_name}',1)
-    cv2.imwrite(f'static/{collage_name}',img_collage)
-
+    collage_path = f'static/{collage_name}'
+    cv2.imwrite(collage_path, img_dst)
     resp = {'url':f'/static/{collage_name}'}
 
     return jsonify(resp)
