@@ -57,8 +57,11 @@ def post_photos():
             x+=1
         y+=1
 
-    cv2.imread('static/img_collage.jpg',img_dst)
-    resp = {'url': '/static/img_collage.jpg'}
+    collage_name = f'{nanoid.generate(size=4)}.jpg'
+    img_collage = cv2.imread(f'static/{collage_name}',1)
+    cv2.imwrite(f'static/{collage_name}',img_collage)
+
+    resp = {'url':f'/static/{collage_name}'}
 
     return jsonify(resp)
 
