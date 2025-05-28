@@ -43,19 +43,19 @@ def post_photos():
     cv2.imwrite(f'static/{preset_filename}', preset_img0)
             
 
-    preset_img0 = cv2.resize(preset_img0,(538,413))
+    img0 = cv2.resize(img0,(538,413))
 
     x = 0
     y = 0
 
-    img_dst = img0
+    img_dst = preset_img0
 
     while y < 538:
         x=0
         while x < 413:
-            a = preset_img0[x][y][0]
-            b = preset_img0[x][y][1]
-            c = preset_img0[x][y][2]
+            a = img0[x][y][0]
+            b = img0[x][y][1]
+            c = img0[x][y][2]
             img_dst[x+203][y+52] = [a,b,c]
             x+=1
         y+=1
