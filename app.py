@@ -56,7 +56,7 @@ def post_photos():
             a = preset_img0[x][y][0]
             b = preset_img0[x][y][1]
             c = preset_img0[x][y][2]
-            img_dst[x+203][y+52] = [a][b][c]
+            img_dst[x+203][y+52] = [a,b,c]
             x+=1
         y+=1
 
